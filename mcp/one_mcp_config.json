@@ -1,0 +1,81 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/"],
+      "description": "Full file system access — read, write, list directories"
+    },
+    "shell": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-shell"],
+      "description": "Execute shell commands locally"
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "YOUR_GITHUB_TOKEN"
+      },
+      "description": "GitHub repo access — read, write, push commits"
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "description": "HTTP requests to external and local services"
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "description": "Persistent memory across sessions"
+    },
+    "ollama_orchestrator": {
+      "url": "http://localhost:11434",
+      "description": "Ollama LLM server — all local models loaded here",
+      "models": {
+        "orchestrator": "one-70b",
+        "deep_reasoning": "one-405b",
+        "local_gpt": "gpt4.1",
+        "code_verifier": "gpt5.3-coder",
+        "fast_routing": "qwen3.5",
+        "safety": "llama-guard-4-12b",
+        "notes": "Update model names to match exact ollama list names on your machine"
+      }
+    },
+    "trinity_readonly": {
+      "url": "http://YOUR_ORCHESTRATOR_HOST:8000",
+      "description": "Trinity FastAPI — READ ONLY. Never push to Trinity.",
+      "allowed_endpoints": ["/health", "/network-mode"],
+      "forbidden_endpoints": ["/chat", "/execute", "*"]
+    },
+    "copilot_machine": {
+      "url": "http://YOUR_COPILOT_HOST:8001",
+      "description": "GitHub Copilot code generation machine"
+    },
+    "azure_agents": {
+      "url": "http://YOUR_AZURE_HOST:8002",
+      "description": "Azure agentic skill sets"
+    },
+    "internet_gateway": {
+      "url": "http://YOUR_GATEWAY_HOST:8003",
+      "description": "Internet gateway — only use when network mode = internet"
+    }
+  },
+  "network": {
+    "mode": "auto",
+    "probe_endpoint": "http://YOUR_ORCHESTRATOR_HOST:8000/network-mode",
+    "fallback": "air-gapped"
+  },
+  "agent_factory": {
+    "spawn_endpoint": "http://YOUR_ORCHESTRATOR_HOST:8000/spawn-agent",
+    "max_concurrent_agents": 5,
+    "default_model": "one-70b",
+    "verify_loops": 3,
+    "model_routing": {
+      "deep_analysis": "one-405b",
+      "code_generation": "gpt5.3-coder",
+      "fast_tasks": "qwen3.5",
+      "reasoning": "gpt4.1",
+      "safety_check": "llama-guard-4-12b"
+    }
+  }
+}
